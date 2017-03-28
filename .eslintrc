@@ -13,12 +13,14 @@
     "defaultParams": true
   },
   "rules": {
+    // It really is not confusing.
     "no-confusing-arrow": 0,
 
+    // Semi-strict max width
     "max-len": [
       "error",
       {
-        "ignoreComments": false,
+        "ignoreComments": true,
         "ignoreStrings": true,
         "code": 80
       }
