@@ -1,20 +1,15 @@
 {
-  "presets": [
-    ["env", { "targets": { "node": true } }],
-    "stage-3"
-  ],
+  "presets": [["env", { "targets": { "node": true } }], "stage-3", "react"],
   "env": {
     "commonjs": {
-      "presets": [
-        "latest",
-        "stage-3"
-      ],
+      "presets": ["env", "stage-3", "react"]
     },
     "umd": {
       "presets": [
-        ["latest", { "es2015": { "modules": false } }],
-        "stage-3"
-      ],
+        ["env", { "es2015": { "modules": false } }],
+        "stage-3",
+        "react"
+      ]
     }
   }
 }

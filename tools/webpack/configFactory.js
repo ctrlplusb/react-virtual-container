@@ -13,11 +13,24 @@ function webpackConfigFactory({ target }) {
     },
     output: {
       path: resolvePath(appRootDir.get(), './umd'),
-      filename: target === 'umd'
-        ? `${libraryName}.js`
-        : `${libraryName}.min.js`,
+      filename:
+        target === 'umd' ? `${libraryName}.js` : `${libraryName}.min.js`,
       library: libraryName,
       libraryTarget: 'umd',
+    },
+    externals: {
+      react: {
+        root: 'React',
+        amd: 'react',
+        commonjs: 'react',
+        commonjs2: 'react',
+      },
+      'react-dom': {
+        root: 'ReactDOM',
+        amd: 'react-dom',
+        commonjs: 'react-dom',
+        commonjs2: 'react-dom',
+      },
     },
     plugins: removeEmpty([
       new webpack.DefinePlugin({
