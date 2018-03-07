@@ -12,10 +12,17 @@ npm-debug.log
 coverage
 
 # Build output
-umd
-commonjs
-build
+dist
 
 # Flow
 flow-coverage
 flow-typed
+
+# Yarn
+yarn-error.log
+
+# Temp directories
+temp
+
+# IDEs
+.vscode
