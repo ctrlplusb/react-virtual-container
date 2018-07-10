@@ -1,3 +1,5 @@
+> Work in progress. Please don't use or share yet.
+
 # react-virtual-container
 
 Optimise your React apps by only rendering components when in proximity to the viewport.
