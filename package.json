@@ -1,6 +1,6 @@
 {
   "name": "react-virtual-container",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Optimise your React apps by only rendering components when in proximity to the viewport.",
   "license": "MIT",
   "main": "dist/react-virtual-container.js",
