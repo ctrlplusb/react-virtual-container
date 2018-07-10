@@ -162,26 +162,32 @@ export default class VirtualContainer extends Component {
   }
 }
 
-const WaypointTarget = ({ offsetBottom, offsetTop, top }) => (
+const WaypointTarget = ({ innerRef, offsetBottom, offsetTop, top }) => (
   <div
     style={{
-      [top ? 'top' : 'bottom']: '-100vh',
+      backgroundColor: 'red',
+      [top ? 'top' : 'bottom']: 0,
       height: '1px',
       left: 0,
       position: 'absolute',
       transform: `translateY(${top ? `-${offsetTop}` : offsetBottom})`,
       width: '1px',
     }}
-  />
+    ref={innerRef}
+  >
+    &nbsp;
+  </div>
 )
 
 WaypointTarget.propTypes = {
+  innerRef: PropTypes.any,
   offsetBottom: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   offsetTop: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   top: PropTypes.bool,
 }
 
 WaypointTarget.defaultProps = {
+  innerRef: undefined,
   offsetBottom: 0,
   offsetTop: 0,
   top: false,
