@@ -17,7 +17,7 @@ Optimise your React apps by only rendering components when in proximity to the v
 
 ## Introduction
 
-This library provides you with the ability to create a "virtual" container, where it's children will only get renderered if the container is within a given proximity of the viewport. This provides you with a nice mechanism by which to lazy load images or "heavy" components.
+This library provides you with the ability to create a "virtual" container, where it's children will only get rendered if the virtual container is within a given proximity of the viewport. This provides you with a nice mechanism by which to lazy load images or "heavy" components.
 
 ## Installation
 
@@ -33,11 +33,11 @@ npm install react-virtual-container
 
 ### Usage
 
-This library follows the "render prop" pattern, allowing you to specify a `render` or `children` prop. The "render prop" will then be called with its result rendered when the virtual container is within proximity of the viewport.
+This library follows the "render prop" pattern, allowing you to specify a `render` or `children` prop. The "render prop" will be called and have its result rendered when the virtual container is within proximity of the viewport.
 
-By default the virtual container needs to be within 50vh (viewport height) distance of the viewport. This is configurable - see [configuration](#configuration).
+By default the virtual container needs to be within "50vh" proximity of the viewport. This is configurable - see [configuration](#configuration). You could set it to a pixel value or any other standard CSS unit value.
 
-In addition to the "render prop" you also need to provide a `placeholder`, being a component/stateless-component/function which will be rendered by the virtual container if it is not within proximity of the viewport. This allows you to avoid layout jumping.
+In addition to the "render prop" you also need to provide a `placeholder`, being a component/function which will be rendered by the virtual container if it is not within proximity of the viewport. This allows you to avoid layout that jumps when the virtual container activates.
 
 Below is an illustrative example.
 
@@ -58,7 +58,7 @@ export default function MyVirtualisedComponent() {
 
 ### Configuration
 
-The virtual container component accepts the following props, providing configuration for it:
+The virtual container component accepts the following props:
 
   - `children` (_PropTypes.func_)
 
