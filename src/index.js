@@ -1,4 +1,1 @@
-import helloWorld from './helloWorld'
-import goodbyeWorld from './goodbyeWorld'
-
-export { helloWorld, goodbyeWorld }
+export { default } from './virtual-container'

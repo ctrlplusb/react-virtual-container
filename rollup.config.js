@@ -6,10 +6,11 @@ const packageJson = require('./package.json')
 process.env.BABEL_ENV = 'production'
 
 module.exports = {
+  external: ['react', 'react-waypoint', 'prop-types'],
   input: 'src/index.js',
   output: {
     file: `dist/${packageJson.name}.js`,
-    format: 'umd',
+    format: 'cjs',
     sourcemap: true,
     name: changeCase
       .titleCase(packageJson.name.replace(/-/g, ' '))
@@ -21,7 +22,7 @@ module.exports = {
       babelrc: false,
       exclude: 'node_modules/**',
       presets: [['env', { modules: false }], 'stage-3', 'react'],
-      plugins: ['external-helpers'],
+      plugins: ['external-helpers', 'transform-class-properties'],
     }),
   ],
 }
