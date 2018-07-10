@@ -84,6 +84,10 @@ The virtual container component accepts the following props, providing configura
 
     The proximity value that will trigger rendering of your "render prop" when the virtual container is within the specified distance relative to the top of the view port.
 
+  - `onChange` (_PropTypes.func_)
+
+    If provided, this callback function will be called any time the virtualisation value changes. It recieves a single boolean parameter, being `true` when virtualisation is active, and `false` when it is not.
+
   - `onlyIn` (_PropTypes.bool_, *default*: false)
 
     By default the virtual container will switch back to rendering your placeholder if your component goes out of proximity of the viewport. This can be especially helpful in keeping resource usage down, however, may not always be required. Set this flag to disable this feature.

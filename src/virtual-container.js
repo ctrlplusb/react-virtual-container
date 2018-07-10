@@ -9,6 +9,7 @@ export default class VirtualContainer extends Component {
     children: PropTypes.func,
     className: PropTypes.string,
     el: PropTypes.string,
+    onChange: PropTypes.func,
     offsetBottom: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     offsetTop: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     optimistic: PropTypes.bool,
@@ -88,12 +89,21 @@ export default class VirtualContainer extends Component {
         typeof this.bottom !== 'undefined'
       ) {
         this.initialized = true
-        this.setState({
-          virtualized: this.top || this.bottom,
-        })
+        this.updateVirtualization(this.top || this.bottom)
       }
-    } else if (this.state.virtualized !== virtualized) {
-      this.setState({ virtualized })
+    } else {
+      this.updateVirtualization(virtualized)
+    }
+  }
+
+  updateVirtualization = virtualized => {
+    if (this.state.virtualized !== virtualized) {
+      this.setState({
+        virtualized,
+      })
+      if (this.props.onChange) {
+        this.props.onChange(virtualized)
+      }
     }
   }
 

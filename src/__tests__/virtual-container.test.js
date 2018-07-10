@@ -290,4 +290,27 @@ describe('VirtualContainer', () => {
     lwrapper.update()
     expect(lwrapper.containsMatchingElement(<Actual />)).toBe(true)
   })
+  it('calls onChange when the virtualisation changes', () => {
+    const onChangeSpy = jest.fn()
+    const lwrapper = shallow(
+      <VirtualContainer {...props} onChange={onChangeSpy} />,
+    )
+    const lchangeTop = lwrapper
+      .find(Waypoint)
+      .at(0)
+      .prop('onPositionChange')
+    const lchangeBottom = lwrapper
+      .find(Waypoint)
+      .at(1)
+      .prop('onPositionChange')
+    lchangeTop(waypointStates.top.initialVisible)
+    lchangeBottom(waypointStates.bottom.initialNotVisible)
+    expect(onChangeSpy).toHaveBeenCalledTimes(0)
+    lchangeBottom(waypointStates.bottom.becomesVisible)
+    lwrapper.update()
+    expect(onChangeSpy).toHaveBeenCalledTimes(1)
+    lchangeBottom(waypointStates.bottom.becomesNotVisible)
+    lwrapper.update()
+    expect(onChangeSpy).toHaveBeenCalledTimes(2)
+  })
 })
