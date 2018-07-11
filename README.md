@@ -8,13 +8,10 @@ Optimise your React apps by only rendering your components when they are in prox
 [![Travis](https://img.shields.io/travis/ctrlplusb/react-virtual-container.svg?style=flat-square)](https://travis-ci.org/ctrlplusb/react-virtual-container)
 [![Codecov](https://img.shields.io/codecov/c/github/ctrlplusb/react-virtual-container.svg?style=flat-square)](https://codecov.io/github/ctrlplusb/react-virtual-container)
 
-<p align="center">
-  <img width="450" height="498" src="https://i.imgur.com/jaqKxUU.gif">
-</p>
-
 ## Table of Contents
 
   - [Introduction](#introduction)
+  - [Example](#example)
   - [Installation](#installation)
   - [Usage](#usage)
   - [Configuration](#configuration)
@@ -22,6 +19,14 @@ Optimise your React apps by only rendering your components when they are in prox
 ## Introduction
 
 This library provides you with the ability to create a "virtual container", where it's children will only get rendered if the "virtual container" is within a given proximity of the viewport. This provides you with a nice mechanism by which to lazy load images or "heavy" components.
+
+## Example
+
+In the example below you will note two virtual containers.  As the viewport moves down the page it triggers each virtual container causing the associated component to render and replace their placeholder. You will additionally note that as the viewport moves away from the virtual containers it causes the components to be replaced by their placeholders - this is default behaviour however it can be disabled via the `onlyIn` prop.
+
+<p align="center">
+  <img width="450" height="498" src="https://i.imgur.com/jaqKxUU.gif">
+</p>
 
 ## Installation
 
