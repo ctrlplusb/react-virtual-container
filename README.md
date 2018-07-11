@@ -8,6 +8,10 @@ Optimise your React apps by only rendering your components when they are in prox
 [![Travis](https://img.shields.io/travis/ctrlplusb/react-virtual-container.svg?style=flat-square)](https://travis-ci.org/ctrlplusb/react-virtual-container)
 [![Codecov](https://img.shields.io/codecov/c/github/ctrlplusb/react-virtual-container.svg?style=flat-square)](https://codecov.io/github/ctrlplusb/react-virtual-container)
 
+<p align="center">
+  <img width="450" height="498" src="https://i.imgur.com/jaqKxUU.gif">
+</p>
+
 ## Table of Contents
 
   - [Introduction](#introduction)
