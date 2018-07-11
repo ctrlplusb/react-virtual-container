@@ -1,6 +1,6 @@
 # react-virtual-container
 
-Optimise your React apps by only rendering components when in proximity to the viewport.
+Optimise your React apps by only rendering your components when they are in proximity to the viewport.
 
 
 [![npm](https://img.shields.io/npm/v/react-virtual-container.svg?style=flat-square)](http://npm.im/react-virtual-container)
@@ -17,7 +17,7 @@ Optimise your React apps by only rendering components when in proximity to the v
 
 ## Introduction
 
-This library provides you with the ability to create a "virtual" container, where it's children will only get rendered if the virtual container is within a given proximity of the viewport. This provides you with a nice mechanism by which to lazy load images or "heavy" components.
+This library provides you with the ability to create a "virtual container", where it's children will only get rendered if the "virtual container" is within a given proximity of the viewport. This provides you with a nice mechanism by which to lazy load images or "heavy" components.
 
 ## Installation
 

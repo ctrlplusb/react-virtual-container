@@ -57,7 +57,7 @@ const waypointStates = {
 
 describe('VirtualContainer', () => {
   const Placeholder = () => <div>🙈</div>
-  const Actual = () => <div>🐵</div>
+  const Actual = () => <div data-test-id="actual">🐵</div>
   const props = {
     placeholder: Placeholder,
     render: Actual,
@@ -99,7 +99,7 @@ describe('VirtualContainer', () => {
       changeTop(waypointStates.top.initialVisible)
       changeBottom(waypointStates.bottom.initialVisible)
       wrapper.update()
-      expect(wrapper.containsMatchingElement(<Actual />)).toBe(true)
+      expect(wrapper.containsMatchingElement(Actual())).toBe(true)
     })
   })
   describe('waypoints updating', () => {
@@ -112,7 +112,7 @@ describe('VirtualContainer', () => {
       it('bottom waypoint becomes visible', () => {
         changeBottom(waypointStates.bottom.becomesVisible)
         wrapper.update()
-        expect(wrapper.containsMatchingElement(<Actual />)).toBe(true)
+        expect(wrapper.containsMatchingElement(Actual())).toBe(true)
       })
     })
     describe('top not visible, bottom visible', () => {
@@ -125,7 +125,7 @@ describe('VirtualContainer', () => {
       it('top waypoint becomes visible', () => {
         changeTop(waypointStates.top.becomesVisible)
         wrapper.update()
-        expect(wrapper.containsMatchingElement(<Actual />)).toBe(true)
+        expect(wrapper.containsMatchingElement(Actual())).toBe(true)
       })
     })
     describe('top visible, bottom visible', () => {
@@ -227,7 +227,7 @@ describe('VirtualContainer', () => {
   })
   it('should render the actual element when optimistic is set', () => {
     const lwrapper = mount(<VirtualContainer {...props} optimistic />)
-    expect(lwrapper.containsMatchingElement(<Actual />)).toBe(true)
+    expect(lwrapper.containsMatchingElement(Actual())).toBe(true)
   })
   it('should render the default style when no className or style provided', () => {
     expect(
@@ -285,10 +285,11 @@ describe('VirtualContainer', () => {
     expect(lwrapper.containsMatchingElement(<Placeholder />)).toBe(true)
     lchangeBottom(waypointStates.bottom.becomesVisible)
     lwrapper.update()
-    expect(lwrapper.containsMatchingElement(<Actual />)).toBe(true)
+    expect(lwrapper.containsMatchingElement(Actual())).toBe(true)
+    expect(lwrapper.find('[data-test-id="actual"]')).toHaveLength(1)
     lchangeBottom(waypointStates.bottom.becomesNotVisible)
     lwrapper.update()
-    expect(lwrapper.containsMatchingElement(<Actual />)).toBe(true)
+    expect(lwrapper.containsMatchingElement(Actual())).toBe(true)
   })
   it('calls onChange when the virtualisation changes', () => {
     const onChangeSpy = jest.fn()

@@ -134,8 +134,8 @@ export default class VirtualContainer extends Component {
       ...passThroughProps
     } = this.props
     const { virtualized } = this.state
-    const Render = children || render
-    if (!Render) {
+    const resolvedRender = children || render
+    if (!resolvedRender) {
       throw new Error('Must provide a children or render function')
     }
 
@@ -150,7 +150,7 @@ export default class VirtualContainer extends Component {
         ref: this.refCb,
       },
       <Fragment>
-        {!virtualized || stopTracking ? <Render /> : <Placeholder />}
+        {!virtualized || stopTracking ? resolvedRender() : <Placeholder />}
         {stopTracking ? null : (
           <Waypoint
             onPositionChange={this.onTopWaypointChange}

@@ -1,7 +1,7 @@
 {
   "name": "react-virtual-container",
   "version": "0.2.0",
-  "description": "Optimise your React apps by only rendering components when in proximity to the viewport.",
+  "description": "Optimise your React apps by only rendering your components when they are in proximity to the viewport.",
   "license": "MIT",
   "main": "dist/react-virtual-container.js",
   "files": [
@@ -31,8 +31,8 @@
     "test:coverage:deploy": "npm run test:coverage && codecov"
   },
   "peerDependencies": {
-    "prop-types": "^15.6.2",
-    "react": "^16.4.1"
+    "prop-types": "^15.0.0",
+    "react": "^16.2.0"
   },
   "dependencies": {
     "react-waypoint": "^8.0.2"
