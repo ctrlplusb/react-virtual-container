@@ -25,7 +25,7 @@ This library provides you with the ability to create a "virtual container", wher
 In the example below you will note two virtual containers.  As the viewport moves down the page it triggers each virtual container causing the associated component to render and replace their placeholder. You will additionally note that as the viewport moves away from the virtual containers it causes the components to be replaced by their placeholders - this is default behaviour however it can be disabled via the `onlyIn` prop.
 
 <p align="center">
-  <img width="450" height="498" src="https://i.imgur.com/jaqKxUU.gif">
+  <img width="450" height="498" src="https://i.imgur.com/q9e3W9I.gif">
 </p>
 
 ## Installation
