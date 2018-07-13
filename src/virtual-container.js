@@ -27,6 +27,7 @@ export default class VirtualContainer extends Component {
     offsetBottom: '50vh',
     offsetTop: '50vh',
     optimistic: false,
+    onChange: undefined,
     onlyIn: false,
     render: undefined,
     scrollableAncestor: undefined,
