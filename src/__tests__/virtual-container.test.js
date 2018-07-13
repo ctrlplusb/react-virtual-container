@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
 
 import React from 'react'
-import enzyme, { mount, shallow } from 'enzyme'
+import enzyme, { mount as enzymeMount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import Waypoint from 'react-waypoint'
 import VirtualContainer from '../'
@@ -58,98 +58,215 @@ const waypointStates = {
 describe('VirtualContainer', () => {
   const Placeholder = () => <div>🙈</div>
   const Actual = () => <div data-test-id="actual">🐵</div>
-  const props = {
-    placeholder: Placeholder,
+  const defaultProps = {
     render: Actual,
   }
-  let wrapper
-  let topWaypoint
-  let bottomWaypoint
-  let changeTop
-  let changeBottom
-  beforeEach(() => {
-    wrapper = mount(<VirtualContainer {...props} />)
-    topWaypoint = wrapper.find(Waypoint).at(0)
-    bottomWaypoint = wrapper.find(Waypoint).at(1)
-    changeTop = topWaypoint.prop('onPositionChange')
-    changeBottom = bottomWaypoint.prop('onPositionChange')
-  })
-  it('should initially render the placeholder', () => {
+  const mount = (props = {}) => {
+    const wrapper = enzymeMount(
+      <VirtualContainer {...defaultProps} {...props} />,
+    )
+    const topWaypoint = wrapper.find(Waypoint).at(0)
+    const bottomWaypoint = wrapper.find(Waypoint).at(1)
+    const changeTop = topWaypoint.prop('onPositionChange')
+    const changeBottom = bottomWaypoint.prop('onPositionChange')
+    return {
+      wrapper,
+      topWaypoint,
+      bottomWaypoint,
+      changeTop,
+      changeBottom,
+    }
+  }
+  it('should initially render the placeholder if one was provided', () => {
+    const { wrapper } = mount({ placeholder: Placeholder })
     expect(wrapper.containsMatchingElement(<Placeholder />)).toBe(true)
   })
   describe('initial waypoint firing', () => {
-    it('only one waypoint has fired - show placeholder', () => {
-      changeTop(waypointStates.top.initialVisible)
-      wrapper.update()
-      expect(wrapper.containsMatchingElement(<Placeholder />)).toBe(true)
-    })
-    it('both waypoints fire, top visible, bottom not visible - show placeholder', () => {
-      changeTop(waypointStates.top.initialVisible)
-      changeBottom(waypointStates.bottom.initialNotVisible)
-      wrapper.update()
-      expect(wrapper.containsMatchingElement(<Placeholder />)).toBe(true)
-    })
-    it('both waypoints fire, top not visible, bottom visible - show placeholder', () => {
-      changeTop(waypointStates.top.initialNotVisible)
-      changeBottom(waypointStates.bottom.initialVisible)
-      wrapper.update()
-      expect(wrapper.containsMatchingElement(<Placeholder />)).toBe(true)
-    })
-    it('both waypoints fire, top visible, bottom visible - show actual', () => {
-      changeTop(waypointStates.top.initialVisible)
-      changeBottom(waypointStates.bottom.initialVisible)
-      wrapper.update()
-      expect(wrapper.containsMatchingElement(Actual())).toBe(true)
-    })
-  })
-  describe('waypoints updating', () => {
-    describe('top visible, bottom not visible', () => {
-      beforeEach(() => {
+    describe('with placeholder', () => {
+      it('only one waypoint has fired - show placeholder', () => {
+        const { wrapper, changeTop } = mount({ placeholder: Placeholder })
+        changeTop(waypointStates.top.initialVisible)
+        wrapper.update()
+        expect(wrapper.containsMatchingElement(<Placeholder />)).toBe(true)
+      })
+      it('both waypoints fire, top visible, bottom not visible - show placeholder', () => {
+        const { wrapper, changeTop, changeBottom } = mount({
+          placeholder: Placeholder,
+        })
         changeTop(waypointStates.top.initialVisible)
         changeBottom(waypointStates.bottom.initialNotVisible)
         wrapper.update()
+        expect(wrapper.containsMatchingElement(<Placeholder />)).toBe(true)
       })
+      it('both waypoints fire, top not visible, bottom visible - show placeholder', () => {
+        const { wrapper, changeTop, changeBottom } = mount({
+          placeholder: Placeholder,
+        })
+        changeTop(waypointStates.top.initialNotVisible)
+        changeBottom(waypointStates.bottom.initialVisible)
+        wrapper.update()
+        expect(wrapper.containsMatchingElement(<Placeholder />)).toBe(true)
+      })
+      it('both waypoints fire, top visible, bottom visible - show actual', () => {
+        const { wrapper, changeTop, changeBottom } = mount({
+          placeholder: Placeholder,
+        })
+        changeTop(waypointStates.top.initialVisible)
+        changeBottom(waypointStates.bottom.initialVisible)
+        wrapper.update()
+        expect(wrapper.containsMatchingElement(Actual())).toBe(true)
+      })
+    })
+    describe('without placeholder', () => {
+      it('only one waypoint has fired - show nothing', () => {
+        const { wrapper, changeTop } = mount()
+        changeTop(waypointStates.top.initialVisible)
+        wrapper.update()
+        expect(wrapper.containsMatchingElement(<Placeholder />)).toBe(false)
+        expect(wrapper.containsMatchingElement(Actual())).toBe(false)
+      })
+      it('both waypoints fire, top visible, bottom not visible - show nothing', () => {
+        const { wrapper, changeTop, changeBottom } = mount()
+        changeTop(waypointStates.top.initialVisible)
+        changeBottom(waypointStates.bottom.initialNotVisible)
+        wrapper.update()
+        expect(wrapper.containsMatchingElement(<Placeholder />)).toBe(false)
+        expect(wrapper.containsMatchingElement(Actual())).toBe(false)
+      })
+      it('both waypoints fire, top not visible, bottom visible - show nothing', () => {
+        const { wrapper, changeTop, changeBottom } = mount()
+        changeTop(waypointStates.top.initialNotVisible)
+        changeBottom(waypointStates.bottom.initialVisible)
+        wrapper.update()
+        expect(wrapper.containsMatchingElement(<Placeholder />)).toBe(false)
+        expect(wrapper.containsMatchingElement(Actual())).toBe(false)
+      })
+      it('both waypoints fire, top visible, bottom visible - show actual', () => {
+        const { wrapper, changeTop, changeBottom } = mount()
+        changeTop(waypointStates.top.initialVisible)
+        changeBottom(waypointStates.bottom.initialVisible)
+        wrapper.update()
+        expect(wrapper.containsMatchingElement(Actual())).toBe(true)
+      })
+    })
+  })
+  describe('waypoints updating', () => {
+    describe('with placeholder', () => {
+      describe('top visible, bottom not visible', () => {
+        it('bottom waypoint becomes visible', () => {
+          const { wrapper, changeTop, changeBottom } = mount({
+            placeholder: Placeholder,
+          })
+          changeTop(waypointStates.top.initialVisible)
+          changeBottom(waypointStates.bottom.initialNotVisible)
+          wrapper.update()
+          // Change:
+          changeBottom(waypointStates.bottom.becomesVisible)
+          wrapper.update()
+          expect(wrapper.containsMatchingElement(Actual())).toBe(true)
+        })
+      })
+      describe('top not visible, bottom visible', () => {
+        it('top waypoint becomes visible', () => {
+          const { wrapper, changeTop, changeBottom } = mount({
+            placeholder: Placeholder,
+          })
+          changeTop(waypointStates.top.initialNotVisible)
+          wrapper.update()
+          changeBottom(waypointStates.bottom.initialVisible)
+          wrapper.update()
+          // Change:
+          changeTop(waypointStates.top.becomesVisible)
+          wrapper.update()
+          expect(wrapper.containsMatchingElement(Actual())).toBe(true)
+        })
+      })
+      describe('inAndOut, top visible, bottom visible', () => {
+        it('bottom waypoint becomes not visible', () => {
+          const { wrapper, changeTop, changeBottom } = mount({
+            placeholder: Placeholder,
+            inAndOut: true,
+          })
+          changeTop(waypointStates.top.initialVisible)
+          changeBottom(waypointStates.bottom.initialVisible)
+          wrapper.update()
+          // Change
+          changeBottom(waypointStates.bottom.becomesNotVisible)
+          wrapper.update()
+          expect(wrapper.containsMatchingElement(<Placeholder />)).toBe(true)
+        })
+        it('top waypoint becomes not visible', () => {
+          const { wrapper, changeTop, changeBottom } = mount({
+            placeholder: Placeholder,
+            inAndOut: true,
+          })
+          changeTop(waypointStates.top.initialVisible)
+          changeBottom(waypointStates.bottom.initialVisible)
+          wrapper.update()
+          // Change:
+          changeTop(waypointStates.top.becomesNotVisible)
+          wrapper.update()
+          expect(wrapper.containsMatchingElement(<Placeholder />)).toBe(true)
+        })
+      })
+    })
+    describe('without placeholder', () => {
       it('bottom waypoint becomes visible', () => {
+        const { wrapper, changeTop, changeBottom } = mount()
+        changeTop(waypointStates.top.initialVisible)
+        changeBottom(waypointStates.bottom.initialNotVisible)
+        wrapper.update()
+        // Change:
         changeBottom(waypointStates.bottom.becomesVisible)
         wrapper.update()
         expect(wrapper.containsMatchingElement(Actual())).toBe(true)
       })
-    })
-    describe('top not visible, bottom visible', () => {
-      beforeEach(() => {
-        changeTop(waypointStates.top.initialNotVisible)
-        wrapper.update()
-        changeBottom(waypointStates.bottom.initialVisible)
-        wrapper.update()
+      describe('top not visible, bottom visible', () => {
+        it('top waypoint becomes visible', () => {
+          const { wrapper, changeTop, changeBottom } = mount()
+          changeTop(waypointStates.top.initialNotVisible)
+          wrapper.update()
+          changeBottom(waypointStates.bottom.initialVisible)
+          wrapper.update()
+          changeTop(waypointStates.top.becomesVisible)
+          wrapper.update()
+          expect(wrapper.containsMatchingElement(Actual())).toBe(true)
+        })
       })
-      it('top waypoint becomes visible', () => {
-        changeTop(waypointStates.top.becomesVisible)
-        wrapper.update()
-        expect(wrapper.containsMatchingElement(Actual())).toBe(true)
-      })
-    })
-    describe('top visible, bottom visible', () => {
-      beforeEach(() => {
-        changeTop(waypointStates.top.initialVisible)
-        changeBottom(waypointStates.bottom.initialVisible)
-        wrapper.update()
-      })
-      it('bottom waypoint becomes not visible', () => {
-        changeBottom(waypointStates.bottom.becomesNotVisible)
-        wrapper.update()
-        expect(wrapper.containsMatchingElement(<Placeholder />)).toBe(true)
-      })
-      it('top waypoint becomes not visible', () => {
-        changeTop(waypointStates.top.becomesNotVisible)
-        wrapper.update()
-        expect(wrapper.containsMatchingElement(<Placeholder />)).toBe(true)
+      describe('inAndOut, top visible, bottom visible', () => {
+        it('bottom waypoint becomes not visible', () => {
+          const { wrapper, changeTop, changeBottom } = mount({
+            inAndOut: true,
+          })
+          changeTop(waypointStates.top.initialVisible)
+          changeBottom(waypointStates.bottom.initialVisible)
+          wrapper.update()
+          // Change
+          changeBottom(waypointStates.bottom.becomesNotVisible)
+          wrapper.update()
+          expect(wrapper.containsMatchingElement(<Placeholder />)).toBe(false)
+          expect(wrapper.containsMatchingElement(Actual())).toBe(false)
+        })
+        it('top waypoint becomes not visible', () => {
+          const { wrapper, changeTop, changeBottom } = mount({
+            inAndOut: true,
+          })
+          changeTop(waypointStates.top.initialVisible)
+          changeBottom(waypointStates.bottom.initialVisible)
+          wrapper.update()
+          // Change:
+          changeTop(waypointStates.top.becomesNotVisible)
+          wrapper.update()
+          expect(wrapper.containsMatchingElement(<Placeholder />)).toBe(false)
+          expect(wrapper.containsMatchingElement(Actual())).toBe(false)
+        })
       })
     })
   })
   it('should apply the default top offset', () => {
-    const lwrapper = mount(<VirtualContainer {...props} />)
+    const { wrapper } = mount()
     expect(
-      lwrapper
+      wrapper
         .find(Waypoint)
         .at(0)
         .children()
@@ -158,9 +275,9 @@ describe('VirtualContainer', () => {
     ).toBe('50vh')
   })
   it('should apply the default bottom offset', () => {
-    const lwrapper = mount(<VirtualContainer {...props} />)
+    const { wrapper } = mount()
     expect(
-      lwrapper
+      wrapper
         .find(Waypoint)
         .at(1)
         .children()
@@ -169,9 +286,9 @@ describe('VirtualContainer', () => {
     ).toBe('50vh')
   })
   it('should apply the custom top offset', () => {
-    const lwrapper = mount(<VirtualContainer {...props} offsetTop="20vh" />)
+    const { wrapper } = mount({ offsetTop: '20vh' })
     expect(
-      lwrapper
+      wrapper
         .find(Waypoint)
         .at(0)
         .children()
@@ -180,9 +297,9 @@ describe('VirtualContainer', () => {
     ).toBe('20vh')
   })
   it('should apply the custom bottom offset', () => {
-    const lwrapper = mount(<VirtualContainer {...props} offsetBottom="40vh" />)
+    const { wrapper } = mount({ offsetBottom: '40vh' })
     expect(
-      lwrapper
+      wrapper
         .find(Waypoint)
         .at(1)
         .children()
@@ -191,45 +308,44 @@ describe('VirtualContainer', () => {
     ).toBe('40vh')
   })
   it('should assign the scrollableAncestor', () => {
-    const lwrapper = mount(
-      <VirtualContainer {...props} scrollableAncestor="window" />,
-    )
+    const { wrapper } = mount({ scrollableAncestor: 'window' })
     expect(
-      lwrapper
+      wrapper
         .find(Waypoint)
         .at(0)
         .prop('scrollableAncestor'),
     ).toBe('window')
     expect(
-      lwrapper
+      wrapper
         .find(Waypoint)
         .at(1)
         .prop('scrollableAncestor'),
     ).toBe('window')
   })
   it('should render the default element', () => {
-    const lwrapper = mount(<VirtualContainer {...props} />)
+    const { wrapper } = mount({ scrollableAncestor: 'window' })
     expect(
-      lwrapper
+      wrapper
         .children()
         .first()
         .type(),
     ).toBe('div')
   })
   it('should render the custom element', () => {
-    const lwrapper = mount(<VirtualContainer {...props} el="section" />)
+    const { wrapper } = mount({ el: 'section' })
     expect(
-      lwrapper
+      wrapper
         .children()
         .first()
         .type(),
     ).toBe('section')
   })
   it('should render the actual element when optimistic is set', () => {
-    const lwrapper = mount(<VirtualContainer {...props} optimistic />)
-    expect(lwrapper.containsMatchingElement(Actual())).toBe(true)
+    const { wrapper } = mount({ optimistic: true })
+    expect(wrapper.containsMatchingElement(Actual())).toBe(true)
   })
   it('should render the default style when no className or style provided', () => {
+    const { wrapper } = mount()
     expect(
       wrapper
         .children()
@@ -238,20 +354,18 @@ describe('VirtualContainer', () => {
     ).toEqual({ position: 'relative' })
   })
   it('should not render the default style when a className is provided', () => {
-    const lwrapper = mount(<VirtualContainer {...props} className="foo" />)
+    const { wrapper } = mount({ className: 'foo' })
     expect(
-      lwrapper
+      wrapper
         .children()
         .first()
         .prop('style'),
     ).toBeUndefined()
   })
   it('should render a custom style', () => {
-    const lwrapper = mount(
-      <VirtualContainer {...props} style={{ position: 'absolute' }} />,
-    )
+    const { wrapper } = mount({ style: { position: 'absolute' } })
     expect(
-      lwrapper
+      wrapper
         .children()
         .first()
         .prop('style'),
@@ -262,63 +376,27 @@ describe('VirtualContainer', () => {
       foo: 'bar',
       baz: 'qux',
     }
-    const lwrapper = mount(<VirtualContainer {...props} {...additionalProps} />)
+    const { wrapper } = mount(additionalProps)
     expect(
-      lwrapper
+      wrapper
         .children()
         .first()
         .props(),
     ).toMatchObject(additionalProps)
   })
-  it('should not re-render the placeholder when onlyIn is set', () => {
-    const lwrapper = shallow(<VirtualContainer {...props} onlyIn />)
-    const lchangeTop = lwrapper
-      .find(Waypoint)
-      .at(0)
-      .prop('onPositionChange')
-    const lchangeBottom = lwrapper
-      .find(Waypoint)
-      .at(1)
-      .prop('onPositionChange')
-    lchangeTop(waypointStates.top.initialVisible)
-    lchangeBottom(waypointStates.bottom.initialNotVisible)
-    expect(lwrapper.containsMatchingElement(<Placeholder />)).toBe(true)
-    lchangeBottom(waypointStates.bottom.becomesVisible)
-    lwrapper.update()
-    expect(lwrapper.containsMatchingElement(Actual())).toBe(true)
-    expect(lwrapper.find('[data-test-id="actual"]')).toHaveLength(1)
-    lchangeBottom(waypointStates.bottom.becomesNotVisible)
-    lwrapper.update()
-    expect(lwrapper.containsMatchingElement(Actual())).toBe(true)
-  })
   it('calls onChange when the virtualisation changes', () => {
     const onChangeSpy = jest.fn()
-    const lwrapper = shallow(
-      <VirtualContainer {...props} onChange={onChangeSpy} />,
-    )
-    const lchangeTop = lwrapper
-      .find(Waypoint)
-      .at(0)
-      .prop('onPositionChange')
-    const lchangeBottom = lwrapper
-      .find(Waypoint)
-      .at(1)
-      .prop('onPositionChange')
-    lchangeTop(waypointStates.top.initialVisible)
-    lchangeBottom(waypointStates.bottom.initialNotVisible)
+    const { wrapper, changeTop, changeBottom } = mount({
+      onChange: onChangeSpy,
+    })
+    changeTop(waypointStates.top.initialVisible)
+    changeBottom(waypointStates.bottom.initialNotVisible)
     expect(onChangeSpy).toHaveBeenCalledTimes(0)
-    lchangeBottom(waypointStates.bottom.becomesVisible)
-    lwrapper.update()
+    changeBottom(waypointStates.bottom.becomesVisible)
+    wrapper.update()
     expect(onChangeSpy).toHaveBeenCalledTimes(1)
-    lchangeBottom(waypointStates.bottom.becomesNotVisible)
-    lwrapper.update()
+    changeBottom(waypointStates.bottom.becomesNotVisible)
+    wrapper.update()
     expect(onChangeSpy).toHaveBeenCalledTimes(2)
-  })
-  it('renders nothing if no placeholder is provided', () => {
-    const lwrapper = shallow(
-      <VirtualContainer {...props} placeholder={undefined} />,
-    )
-    expect(lwrapper.containsMatchingElement(<Placeholder />)).toBe(false)
-    expect(lwrapper.containsMatchingElement(Actual())).toBe(false)
   })
 })

@@ -9,11 +9,11 @@ export default class VirtualContainer extends Component {
     children: PropTypes.func,
     className: PropTypes.string,
     el: PropTypes.string,
+    inAndOut: PropTypes.bool,
     onChange: PropTypes.func,
     offsetBottom: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     offsetTop: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     optimistic: PropTypes.bool,
-    onlyIn: PropTypes.bool,
     placeholder: PropTypes.func,
     render: PropTypes.func,
     scrollableAncestor: PropTypes.any,
@@ -24,11 +24,11 @@ export default class VirtualContainer extends Component {
     children: undefined,
     className: undefined,
     el: 'div',
+    inAndOut: false,
     offsetBottom: '50vh',
     offsetTop: '50vh',
     optimistic: false,
     onChange: undefined,
-    onlyIn: false,
     placeholder: undefined,
     render: undefined,
     scrollableAncestor: undefined,
@@ -125,7 +125,7 @@ export default class VirtualContainer extends Component {
       children,
       className,
       el,
-      onlyIn,
+      inAndOut,
       optimistic,
       offsetTop,
       offsetBottom,
@@ -141,7 +141,7 @@ export default class VirtualContainer extends Component {
       throw new Error('Must provide a children or render function')
     }
 
-    const stopTracking = this.initialized && onlyIn
+    const stopTracking = this.initialized && !inAndOut
 
     return createElement(
       el,

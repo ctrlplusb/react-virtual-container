@@ -11,22 +11,15 @@ Optimise your React apps by only rendering your components when they are in prox
 ## Table of Contents
 
   - [Introduction](#introduction)
-  - [Example](#example)
   - [Installation](#installation)
+  - [Example](#example)
+  - [Example - Out Again](#example-out-again)
   - [Usage](#usage)
   - [Configuration](#configuration)
 
 ## Introduction
 
 This library provides you with the ability to create a "virtual container", where it's children will only get rendered if the "virtual container" is within a given proximity of the viewport. This provides you with a nice mechanism by which to lazy load images or "heavy" components.
-
-## Example
-
-In the example below you will note two virtual containers.  As the viewport moves down the page it triggers each virtual container causing the associated component to render and replace their placeholder. You will additionally note that as the viewport moves away from the virtual containers it causes the components to be replaced by their placeholders - this is default behaviour however it can be disabled via the `onlyIn` prop.
-
-<p align="center">
-  <img width="450" height="498" src="https://i.imgur.com/q9e3W9I.gif">
-</p>
 
 ## Installation
 
@@ -39,6 +32,22 @@ Or, if you prefer npm:
 ```bash
 npm install react-virtual-container
 ```
+
+## Example
+
+In the example below you will note two virtual containers.  As the viewport moves down the page it triggers each virtual container causing the associated component to render and replace their placeholder.
+
+<p align="center">
+  <img width="450" height="498" src="https://i.imgur.com/QHbJdeE.gif">
+</p>
+
+## Example - Out Again
+
+In this example we expand on the behaviour of our virtual containers by setting the `inAndOut` prop. With this prop enabled as the viewport moves away from the virtual containers the components will again be replaced by their placeholders. This can be useful for cases where the components being virtualised consume a heavy amount of CPU/memory resources.
+
+<p align="center">
+  <img width="450" height="498" src="https://i.imgur.com/q9e3W9I.gif">
+</p>
 
 ### Usage
 
@@ -83,6 +92,12 @@ The virtual container component accepts the following props:
 
     > Your render prop results will render as children to this element.
 
+  - `inAndOut` (_PropTypes.bool_, *default*: false)
+
+    If you enable this prop, then your component will be removed (or replaced with the `placeholder` if one was defined) when the viewport moves out of proximity to the virtual container.
+
+    This can be especially useful for component that heavily use CPU/memory resources.
+
   - `offsetBottom` (_PropTypes.oneOfType([PropTypes.string, PropTypes.number])_, *default*: "50vh")
 
     The proximity value that will trigger rendering of your "render prop" when the virtual container is within the specified distance relative to the bottom of the view port.
@@ -94,10 +109,6 @@ The virtual container component accepts the following props:
   - `onChange` (_PropTypes.func_)
 
     If provided, this callback function will be called any time the virtualisation value changes. It recieves a single boolean parameter, being `true` when virtualisation is active, and `false` when it is not.
-
-  - `onlyIn` (_PropTypes.bool_, *default*: false)
-
-    By default the virtual container will switch back to rendering your placeholder if your component goes out of proximity of the viewport. This can be especially helpful in keeping resource usage down, however, may not always be required. Set this flag to disable this feature.
 
   - `optimistic` (_PropTypes.bool_, *default*: false)
 
