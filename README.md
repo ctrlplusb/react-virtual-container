@@ -46,7 +46,7 @@ In the example below you will note two virtual containers.  As the viewport move
 In this example we expand on the behaviour of our virtual containers by setting the `inAndOut` prop. With this prop enabled as the viewport moves away from the virtual containers the components will again be replaced by their placeholders. This can be useful for cases where the components being virtualised consume a heavy amount of CPU/memory resources.
 
 <p align="center">
-  <img width="450" height="498" src="https://i.imgur.com/q9e3W9I.gif">
+  <img width="360" height="410" src="https://i.imgur.com/q9e3W9I.gif">
 </p>
 
 ### Usage
