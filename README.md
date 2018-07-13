@@ -13,7 +13,7 @@ Optimise your React apps by only rendering your components when they are in prox
   - [Introduction](#introduction)
   - [Installation](#installation)
   - [Example](#example)
-  - [Example - Out Again](#example-out-again)
+  - [Example - Out Again](#example---out-again)
   - [Usage](#usage)
   - [Configuration](#configuration)
   - [Tips and Tricks](#tips-and-tricks)
