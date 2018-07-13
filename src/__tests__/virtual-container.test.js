@@ -314,4 +314,11 @@ describe('VirtualContainer', () => {
     lwrapper.update()
     expect(onChangeSpy).toHaveBeenCalledTimes(2)
   })
+  it('renders nothing if no placeholder is provided', () => {
+    const lwrapper = shallow(
+      <VirtualContainer {...props} placeholder={undefined} />,
+    )
+    expect(lwrapper.containsMatchingElement(<Placeholder />)).toBe(false)
+    expect(lwrapper.containsMatchingElement(Actual())).toBe(false)
+  })
 })

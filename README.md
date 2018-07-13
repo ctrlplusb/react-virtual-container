@@ -46,9 +46,7 @@ This library follows the "render prop" pattern, allowing you to specify a `rende
 
 By default the virtual container needs to be within "50vh" proximity of the viewport. This is configurable - see [configuration](#configuration). You could set it to a pixel value or any other standard CSS unit value.
 
-In addition to the "render prop" you also need to provide a `placeholder`, being a component/function which will be rendered by the virtual container if it is not within proximity of the viewport. This allows you to avoid layout that jumps when the virtual container activates.
-
-Below is an illustrative example.
+In addition to the "render prop" a useful prop is `placeholder`; it allows you to provide a  component which will be rendered by the virtual container until it is within proximity of the viewport. This allows you to avoid layout that jumps when the virtual container activates. The `placeholder` prop is optional, however, we do recommend using it where you expect content jumping to occur.
 
 ```jsx
 import React from 'react'
@@ -105,9 +103,9 @@ The virtual container component accepts the following props:
 
     If you set this then the placeholder will be rendered before the "render prop" whilst we determine if the virtual container is within proximity of the viewport. You should almost never use this.
 
-  - `placeholder` (_PropTypes.func.isRequired_)
+  - `placeholder` (_PropTypes.func_)
 
-    The placeholder component/function that will be rendered when the virtual container is not within proximity of the viewport.
+    A placeholder component/function that will be rendered when the virtual container is not within proximity of the viewport. Useful to avoid your page jumping with new content being inserted (especially when scrolling from the bottom of the page up).
 
   - `render` (_PropTypes.func_)
 

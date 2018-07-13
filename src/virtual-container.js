@@ -14,7 +14,7 @@ export default class VirtualContainer extends Component {
     offsetTop: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     optimistic: PropTypes.bool,
     onlyIn: PropTypes.bool,
-    placeholder: PropTypes.func.isRequired,
+    placeholder: PropTypes.func,
     render: PropTypes.func,
     scrollableAncestor: PropTypes.any,
     style: PropTypes.object,
@@ -29,6 +29,7 @@ export default class VirtualContainer extends Component {
     optimistic: false,
     onChange: undefined,
     onlyIn: false,
+    placeholder: undefined,
     render: undefined,
     scrollableAncestor: undefined,
     style: undefined,
@@ -151,7 +152,11 @@ export default class VirtualContainer extends Component {
         ref: this.refCb,
       },
       <Fragment>
-        {!virtualized || stopTracking ? resolvedRender() : <Placeholder />}
+        {!virtualized || stopTracking ? (
+          resolvedRender()
+        ) : Placeholder ? (
+          <Placeholder />
+        ) : null}
         {stopTracking ? null : (
           <Waypoint
             onPositionChange={this.onTopWaypointChange}
