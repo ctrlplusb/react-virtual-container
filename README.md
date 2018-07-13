@@ -16,6 +16,8 @@ Optimise your React apps by only rendering your components when they are in prox
   - [Example - Out Again](#example-out-again)
   - [Usage](#usage)
   - [Configuration](#configuration)
+  - [Tips and Tricks](#tips-and-tricks)
+    - [Usage with Styled Components or Emotion](#usage-with-styled-components-or-emotion)
 
 ## Introduction
 
@@ -131,3 +133,41 @@ The virtual container component accepts the following props:
     A style to provide to the virtual container element.
 
     > Note: when providing a style for your virtual container element you MUST ensure that you have a "position" value set. This is because we use a set of absolutely positioned elements by which to track the proximity.
+
+### Tips and Tricks
+
+Below are some useful tips for using this library effectively within your app.
+
+#### Usage with Styled Components or Emotion
+
+The `VirtualContainer` component produces an actual DOM element - a `div` by default, although this is configurable via the `el` prop.
+
+What if you want to style the element via Styled Components or Emotion, two very popular CSS-in-JS libraries.
+
+You can completely do so by wrapping the `VirtualContainer` with the style function. Styled Components / Emotion will then pass down a `className` to the `VirtualContainer`, which it supports as a prop. The `className` will be applied to the element.
+
+We will update the example from earlier to do so.
+
+```jsx
+import styled from 'react-emotion'
+import VirtualContainer from 'react-virtual-container'
+
+const StyledVirtualContainer = styled(VirtualContainer)`
+  position: relative;
+  height: 100px;
+  background-color: pink;
+`
+
+export default function MyVirtualisedComponent() {
+  return (
+    //                        👇 you can still pass down configuration! woot!
+    <StyledVirtualContainer inAndOut>
+      {() => <div>🐵</div>}
+    </StyledVirtualContainer>
+  )
+}
+```
+
+Awesome! This is a pretty powerful technique, and can aid in avoiding having to use a `placeholder`.
+
+> Note: when providing your own styled, please make sure you set a "position" style on your component. This is because internally we have some relatively positioned elements which are rendered as children in order to tracking of viewport proximity.
