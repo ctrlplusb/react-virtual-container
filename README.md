@@ -38,7 +38,7 @@ npm install react-virtual-container
 In the example below you will note two virtual containers.  As the viewport moves down the page it triggers each virtual container causing the associated component to render and replace their placeholder.
 
 <p align="center">
-  <img width="450" height="498" src="https://i.imgur.com/QHbJdeE.gif">
+  <img width="450" height="409" src="https://i.imgur.com/QHbJdeE.gif">
 </p>
 
 ## Example - Out Again
